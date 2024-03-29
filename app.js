@@ -7,7 +7,7 @@ const app = express();
 const port = 3000; // Порт, на котором будет запущен сервер
 
 // Создание экземпляра бота Telegram
-const botToken = '7134028377:AAH0UHbDfjYX_bajNKC5VmYhSuJpXBv9OyE'; // Замените на ваш токен доступа
+const botToken = 'YOUR_BOT_TOKEN_HERE'; // Замените на ваш токен доступа
 const bot = new Telegraf(botToken);
 
 // Настройка обработчика команды /start
@@ -31,13 +31,6 @@ app.post('/webhook', (req, res) => {
     // Далее вы можете обработать данные и отправить нужные уведомления в ваш телеграм-бот
     res.sendStatus(200); // Отправляем ответ на запрос
 });
-
-// Установка вебхука для вашего телеграм-бота
-const webhookURL = 'https://hook.eu2.make.com/xa5qksoqd4baal7mpyvia2un6q9na43j'// Замnnoените на URL вашего веб-сервера
-bot.telegram.setWebhook(webhookURL);
-
-// Старт бота
-bot.launch();
 
 // Запуск Express сервера
 app.listen(port, () => {
