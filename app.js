@@ -1,38 +1,53 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Telegraf } = require('telegraf');
+const mongoose = require('mongoose');
 
-// Создание экземпляра Express приложения
 const app = express();
-const port = 3000; // Порт, на котором будет запущен сервер
+const port = 3000; 
 
-// Создание экземпляра бота Telegram
-const botToken = 'YOUR_BOT_TOKEN_HERE'; // Замените на ваш токен доступа
+mongoose.connect('mongodb+srv://zhosya:zhosya@cluster0.gkkghab.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch((err) => console.error('Error connecting to MongoDB:', err));
+
+const userDataSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    phone: String
+});
+
+const UserData = mongoose.model('UserData', userDataSchema);
+
+const botToken = '7134028377:AAH0UHbDfjYX_bajNKC5VmYhSuJpXBv9OyE'; // Замените на ваш токен доступа
 const bot = new Telegraf(botToken);
 
-// Настройка обработчика команды /start
 bot.start((ctx) => ctx.reply('Привет! Это бот для связи с веб-сайтом.'));
 
-// Настройка обработчика текстовых сообщений
 bot.on('text', (ctx) => {
-    // Здесь можно обработать текст сообщения и выполнить необходимые действия
-    // Например, отправить запрос на ваш веб-сайт для обработки данных
     ctx.reply('Ваше сообщение принято');
 });
 
-// Создание мидлвара для парсинга JSON
 app.use(bodyParser.text());
 
-// Маршрут для обработки данных от ноукод-сайта
-app.post('/webhook', (req, res) => {
-    const dataFromNoCode = req.body; // Получаем данные от ноукод-сайта
+app.post('/webhook',async (req, res) => {
+    const dataFromNoCode = req.body; 
     console.log('Получены данные от ноукод-сайта:', dataFromNoCode);
-    // console.log(req);
-    // Далее вы можете обработать данные и отправить нужные уведомления в ваш телеграм-бот
-    res.sendStatus(200); // Отправляем ответ на запрос
+    const [name, email, phone] = dataFromNoCode.split(' / ');
+    const newUser = new UserData({
+        name: name,
+        email: email,
+        phone: phone
+    });
+    try {
+        await newUser.save();
+        console.log('Данные сохранены в базе данных');
+        res.sendStatus(200); 
+    } catch (error) {
+        console.error('Ошибка при сохранении данных в базе данных:', error);
+        res.sendStatus(500); 
+    }
 });
 
-// Запуск Express сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
