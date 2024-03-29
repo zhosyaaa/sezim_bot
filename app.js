@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.post('/webhook', (req, res) => {
     const dataFromNoCode = req.body; // Получаем данные от ноукод-сайта
     console.log('Получены данные от ноукод-сайта:', dataFromNoCode);
-    console.log(req);
+    // console.log(req);
     // Далее вы можете обработать данные и отправить нужные уведомления в ваш телеграм-бот
     res.sendStatus(200); // Отправляем ответ на запрос
 });
