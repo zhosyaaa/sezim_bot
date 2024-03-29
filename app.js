@@ -7,7 +7,7 @@ const app = express();
 const port = 3000; // Порт, на котором будет запущен сервер
 
 // Создание экземпляра бота Telegram
-const botToken = 'YOUR_BOT_TOKEN_HERE'; // Замените на ваш токен доступа
+const botToken = '7134028377:AAH0UHbDfjYX_bajNKC5VmYhSuJpXBv9OyE'; // Замените на ваш токен доступа
 const bot = new Telegraf(botToken);
 
 // Настройка обработчика команды /start
