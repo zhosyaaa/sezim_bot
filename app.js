@@ -21,7 +21,7 @@ bot.on('text', (ctx) => {
 });
 
 // Создание мидлвара для парсинга JSON
-app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 // Маршрут для обработки данных от ноукод-сайта
 app.post('/webhook', (req, res) => {
