@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000; 
+app.use(bodyParser.text());
+
 
 mongoose.connect('mongodb+srv://zhosya:zhosya@cluster0.gkkghab.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
@@ -60,7 +62,6 @@ bot.command('assignrole', async (ctx) => {
     }
 });
 
-app.use(bodyParser.text());
 
 app.post('/webhook',async (req, res) => {
     const dataFromNoCode = req.body; 
@@ -81,7 +82,7 @@ app.post('/webhook',async (req, res) => {
         res.sendStatus(500); 
     }
 });
-bot.launch();
+// bot.launch();
 
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
